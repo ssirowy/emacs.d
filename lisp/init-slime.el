@@ -44,5 +44,7 @@
 
   (add-hook 'slime-repl-mode-hook 'sanityinc/slime-repl-setup))
 
+(setq inferior-lisp-program "clisp")
+(setq slime-contribs '(slime-fancy))
 
 (provide 'init-slime)
