@@ -1,4 +1,4 @@
-(require 'kubernetes)
+(require-package 'kubernetes)
 
 ;;; Going to add more configuration to kubernetes here eventually
 
