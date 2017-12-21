@@ -103,6 +103,7 @@
 (require 'init-lisp)
 (require 'init-slime)
 (require 'init-common-lisp)
+(require 'init-kubernetes)
 
 (when *spell-check-support-enabled*
   (require 'init-spelling))

@@ -5,7 +5,13 @@
                               (require 'slime)
                               (normal-mode))))
 
+
+;;(setq inferior-lisp-program "clisp -K full")
+
 (after-load 'slime
+  (when (executable-find "clisp")
+    (add-to-list 'slime-lisp-implementations
+                 '(clisp ("clisp") :coding-system utf-8-unix)))
   (when (executable-find "sbcl")
     (add-to-list 'slime-lisp-implementations
                  '(sbcl ("sbcl") :coding-system utf-8-unix)))
@@ -16,7 +22,7 @@
     (add-to-list 'slime-lisp-implementations
                  '(ccl ("ccl") :coding-system utf-8-unix))))
 
-;; From http://bc.tech.coop/blog/070515.html
+;; from http://bc.tech.coop/blog/070515.html
 (defun lispdoc ()
   "Searches lispdoc.com for SYMBOL, which is by default the symbol currently under the curser"
   (interactive)
