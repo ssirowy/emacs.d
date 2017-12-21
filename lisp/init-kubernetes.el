@@ -1,7 +1,5 @@
 (require 'kubernetes)
 
-(use-package kubernetes
-             :ensure t
-             :commands (kubernetes-overview))
+;;; Going to add more configuration to kubernetes here eventually
 
 (provide 'init-kubernetes)
