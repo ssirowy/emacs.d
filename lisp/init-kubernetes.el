@@ -1,5 +1,6 @@
 (require-package 'kubernetes)
 
-;;; Going to add more configuration to kubernetes here eventually
+;;; Some keybindings for basic commands.
+(global-set-key (kbd "C-x o") 'kubernetes-overview)
 
 (provide 'init-kubernetes)
