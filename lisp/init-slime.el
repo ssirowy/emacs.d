@@ -44,7 +44,8 @@
 
   (add-hook 'slime-repl-mode-hook 'sanityinc/slime-repl-setup))
 
-(setq inferior-lisp-program "clisp")
+(setq inferior-lisp-program "clisp"
+      lisp-indent-function 'common-lisp-indent-function)
 (setq slime-contribs '(slime-fancy))
 
 (provide 'init-slime)
