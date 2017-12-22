@@ -5,5 +5,4 @@
 (global-set-key (kbd "C-c k c") 'kubernetes-use-context)
 (global-set-key (kbd "C-c k n") 'kubernetes-set-namespace)
 
-
 (provide 'init-kubernetes)
