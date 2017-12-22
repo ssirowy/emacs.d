@@ -78,7 +78,7 @@
 (require 'init-darcs)
 (require 'init-git)
 (require 'init-github)
-
+(require 'init-company)
 (require 'init-compile)
 (require 'init-crontab)
 (require 'init-textile)
