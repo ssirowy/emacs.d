@@ -1,6 +1,13 @@
 (maybe-require-package 'json-mode)
 (maybe-require-package 'js2-mode)
 (maybe-require-package 'coffee-mode)
+(maybe-require-package 'rjsx-mode)
+
+(require-package 'js2-refactor)
+(require-package 'dash)
+(require-package 's)
+(require-package 'multiple-cursors)
+(require-package 'yasnippet)
 
 (defcustom preferred-javascript-mode
   (first (remove-if-not #'fboundp '(js2-mode js-mode)))
@@ -26,21 +33,23 @@
 (setq-default js2-basic-offset 4
               js2-bounce-indent-p nil)
 (after-load 'js2-mode
-  ;; Disable js2 mode's syntax error highlighting by default...
-  (setq-default js2-mode-show-parse-errors nil
-                js2-mode-show-strict-warnings nil)
-  ;; ... but enable it if flycheck can't handle javascript
-  (autoload 'flycheck-get-checker-for-buffer "flycheck")
-  (defun sanityinc/disable-js2-checks-if-flycheck-active ()
-    (unless (flycheck-get-checker-for-buffer)
-      (set (make-local-variable 'js2-mode-show-parse-errors) t)
-      (set (make-local-variable 'js2-mode-show-strict-warnings) t)))
-  (add-hook 'js2-mode-hook 'sanityinc/disable-js2-checks-if-flycheck-active)
+            ;; Disable js2 mode's syntax error highlighting by default...
+            (setq-default js2-mode-show-parse-errors nil
+                          js2-mode-show-strict-warnings nil)
+            ;; ... but enable it if flycheck can't handle javascript
+            (autoload 'flycheck-get-checker-for-buffer "flycheck")
+            (defun sanityinc/disable-js2-checks-if-flycheck-active ()
+              (unless (flycheck-get-checker-for-buffer)
+                (set (make-local-variable 'js2-mode-show-parse-errors) t)
+                (set (make-local-variable 'js2-mode-show-strict-warnings) t)))
+            (add-hook 'js2-mode-hook 'sanityinc/disable-js2-checks-if-flycheck-active)
 
-  (add-hook 'js2-mode-hook (lambda () (setq mode-name "JS2")))
+            (add-hook 'js2-mode-hook (lambda () (setq mode-name "JS2")))
 
-  (after-load 'js2-mode
-    (js2-imenu-extras-setup)))
+            (add-hook 'js2-mode-hook #'js2-refactor-mode)
+
+            (after-load 'js2-mode
+                        (js2-imenu-extras-setup)))
 
 ;; js-mode
 (setq-default js-indent-level preferred-javascript-indent-level)
@@ -74,6 +83,20 @@
 (when (fboundp 'coffee-mode)
   (add-to-list 'auto-mode-alist '("\\.coffee\\.erb\\'" . coffee-mode)))
 
+
+;; --------------------------------------------------------------------------
+;; js2-refactor mode configuration
+;; --------------------------------------------------------------------------
+(js2r-add-keybindings-with-prefix "C-c C-m")
+
+
+
+(global-set-key (kbd "C-c C-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+
 ;; ---------------------------------------------------------------------------
 ;; Run and interact with an inferior JS via js-comint.el
 ;; ---------------------------------------------------------------------------
@@ -89,7 +112,7 @@
   (define-key inferior-js-minor-mode-map "\C-cl" 'js-load-file-and-go)
 
   (define-minor-mode inferior-js-keys-mode
-    "Bindings for communicating with an inferior js interpreter."
+      "Bindings for communicating with an inferior js interpreter."
     nil " InfJS" inferior-js-minor-mode-map)
 
   (dolist (hook '(js2-mode-hook js-mode-hook))
@@ -101,8 +124,8 @@
 
 (when (maybe-require-package 'skewer-mode)
   (after-load 'skewer-mode
-    (add-hook 'skewer-mode-hook
-              (lambda () (inferior-js-keys-mode -1)))))
+              (add-hook 'skewer-mode-hook
+                        (lambda () (inferior-js-keys-mode -1)))))
 
 
 (provide 'init-javascript)
