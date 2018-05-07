@@ -9,6 +9,10 @@
 (define-key global-map (kbd "C-c l") 'org-store-link)
 (define-key global-map (kbd "C-c a") 'org-agenda)
 
+;; Add Org reveal
+(require-package 'ox-reveal)
+(setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+
 ;; Various preferences
 (setq org-log-done t
       org-completion-use-ido t
